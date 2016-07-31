@@ -841,7 +841,7 @@ echo "==========================================================================
 echo "8.2 Remove OS Information from Login Warning Banners"
 egrep '(\\v|\\r|\\m|\\s)' /etc/issue
 egrep '(\\v|\\r|\\m|\\s)' /etc/motd
-egrep'(\\v|\\r|\\m|\\s)' /etc/issue.net
+egrep '(\\v|\\r|\\m|\\s)' /etc/issue.net
 
 echo "=================================================================================="
 echo "8.3 Set GNOME Warning Banner"
@@ -934,7 +934,7 @@ echo "9.2.6 Ensure root PATH Integrity"
 if [ "`echo $PATH | /bin/grep :: `" != "" ]; then
 echo "Empty Directory in PATH (::)"
 fi
-if [ "`echo $PATH | bin/grep :$`" != "" ]; then
+if [ "`echo $PATH | /bin/grep :$`" != "" ]; then
 echo "Trailing : in PATH"
 fi
 
@@ -985,18 +985,19 @@ done
 
 echo "=================================================================================="
 echo "9.2.8 Check User Dot File Permissions"
-for dir in `/bin/cat /etc/passwd | /bin/egrep -v '(root|sync|halt|shutdown)' | /bin/awk -F: '($7 != "/sbin/nologin") { print $6 }'`; do
-for file in $dir/.[A-Za-z0-9]*; do
-if [ ! -h "$file" -a -f "$file" ]; then
-fileperm=`/bin/ls -ld $file | /bin/cut -f1 -d" "`
-if [ `echo $fileperm | /bin/cut -c6 ` != "-"]; then
-echo "Group Write permission set on file $file"
-fi
-if [ `echo $fileperm | /bin/cut -c9 ` != "-"]; then
-echo "Other Write permission set on file $file"
-fi
-fi
-done
+for dir in `/bin/cat /etc/passwd | /bin/egrep -v '(root|sync|halt|shutdown)' | 
+	/bin/awk -F: '($7 != "/sbin/nologin") { print $6 }'`; do
+		for file in $dir/.[A-Za-z0-9]*; do
+			if [ ! -h "$file" -a -f "$file" ]; then 
+				fileperm=`/bin/ls -ld $file | /bin/cut -f1 -d" "`
+				if [ `echo $fileperm | /bin/cut -c6 ` != "-" ]; then 
+					echo "Group Write permission set on file $file"
+				fi
+				if [ `echo $fileperm | /bin/cut -c9 ` != "-" ]; then 
+					echo "Other Write permission set on file $file"
+				fi 
+			fi
+		done 
 done
 
 echo "=================================================================================="
@@ -1177,4 +1178,3 @@ for dir in `/bin/cat /etc/passwd |\
 done
 echo "=================================================================================="
 echo "Auditing is Completed"
-
