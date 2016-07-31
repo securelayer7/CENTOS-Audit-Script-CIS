@@ -1130,42 +1130,50 @@ fi
 done
 
 echo "=================================================================================="
-
 echo "9.2.17 Check for Duplicate User Names"
-echo "The Output for the Audit of Control 9.2.18 - Check for Duplicate User Names is"
-cat /etc/passwd | cut -f1 -d":" | /bin/sort -n | /usr/bin/uniq -c |while read x ; do[ -z "${x}" ] && break
-set - $x
-if [ $1 -gt 1 ]; then
-uids=`/bin/gawk -F: '($1 == n) { print $3 }' n=$2 /etc/passwd | xargs`
-echo "Duplicate User Name ($2): ${uids}"
-fi
+echo "The Output for the Audit of Control 9.2.18 - Check for Duplicate User Names is" 
+cat /etc/passwd | cut -f1 -d":" | /bin/sort -n | /usr/bin/uniq -c |\
+	while read x ; do
+	[ -z "${x}" ] && break 
+	set - $x
+	if [ $1 -gt 1 ]; then
+		uids=`/bin/gawk -F: '($1 == n) { print $3 }' n=$2 \ 
+			/etc/passwd | xargs`
+		echo "Duplicate User Name ($2): ${uids}" 
+	fi
 done
 echo "=================================================================================="
 echo "9.2.18 Check for Duplicate Group Names"
-echo "The Output for the Audit of Control 9.2.19 - Check for Duplicate Group Names is"
-cat /etc/group | cut -f1 -d":" | /bin/sort -n | /usr/bin/uniq -c | while read x ;do[ -z "${x}" ] && break
-set - $x
-if [ $1 -gt 1 ]; then
-gids=`/bin/gawk -F: '($1 == n) { print $3 }' n=$2 /etc/group | xargs`
-echo "Duplicate Group Name ($2): ${gids}"
-fi
+echo "The Output for the Audit of Control 9.2.19 - Check for Duplicate Group Names is" 
+cat /etc/group | cut -f1 -d":" | /bin/sort -n | /usr/bin/uniq -c |\
+	while read x ; do
+	[ -z "${x}" ] && break 
+	set - $x
+	if [ $1 -gt 1 ]; then
+		gids=`/bin/gawk -F: '($1 == n) { print $3 }' n=$2 \ 
+		/etc/group | xargs`
+		echo "Duplicate Group Name ($2): ${gids}" 
+	fi
 done
 
 echo "=================================================================================="
 echo "9.2.19 Check for Presence of User .netrc Files"
 echo "----"
-for dir in `/bin/cat /etc/passwd |/bin/awk -F: '{ print $6 }'`; do
-if [ ! -h "$dir/.netrc" -a -f "$dir/.netrc" ]; then
-echo ".netrc file $dir/.netrc exists"
-fi
+for dir in `/bin/cat /etc/passwd |\
+	/bin/awk -F: '{ print $6 }'`; do
+	if [ ! -h "$dir/.netrc" -a -f "$dir/.netrc" ]; then
+		echo ".netrc file $dir/.netrc exists" 
+	fi
 done
 
 echo "=================================================================================="
 echo "9.2.20 Check for Presence of User .forward Files"
-for dir in `/bin/cat /etc/passwd |/bin/awk -F: '{ print $6 }'`; do
-if [ ! -h "$dir/.forward" -a -f "$dir/.forward" ]; then
-echo ".forward file $dir/.forward exists"
-fi
+echo "----"
+for dir in `/bin/cat /etc/passwd |\
+	/bin/awk -F: '{ print $6 }'`; do
+		if [ ! -h "$dir/.forward" -a -f "$dir/.forward" ]; then 
+			echo ".forward file $dir/.forward exists"
+		fi
 done
 echo "=================================================================================="
 echo "Auditing is Completed"
