@@ -1,4 +1,4 @@
-# CentOS Audit Bash Script foe CIS
+# CentOS Audit Bash Script for CIS
 
 
 #!/bin/bash
