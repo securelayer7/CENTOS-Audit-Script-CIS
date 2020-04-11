@@ -9,4 +9,5 @@ Last Update Data : 26 July, 2016
  
 #Use following command to run this scipt  
 `chmod +x CentOS_audit.sh`
+
 `./CentOS_audit.sh`
